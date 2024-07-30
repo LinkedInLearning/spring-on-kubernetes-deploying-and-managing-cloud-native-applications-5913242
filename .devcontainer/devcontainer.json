@@ -1,7 +1,10 @@
 {
-  "extensions": [
-    "GitHub.github-vscode-theme"
-    // Additional Extensions Here
+  "extensions": [    
+    "GitHub.github-vscode-theme",
+    "redhat.java",
+    "vscjava.vscode-spring-initializr",
+    "vscjava.vscode-spring-boot-dashboard",
+    "vmware.vscode-spring-boot"
   ],
   "onCreateCommand": "echo PS1='\"$ \"' >> ~/.bashrc",
   "postAttachCommand": "git pull --all"
