@@ -1,0 +1,60 @@
+controller:
+  addHeaders:
+    X-Content-Type-Options: "nosniff"
+    Strict-Transport-Security: "max-age=63072000; includeSubDomains"
+    Cache-Control: "no-cache, no-store"
+    Expires: "0"
+    Pragma: no-cache
+  config:
+    use-gzip: true
+    enable-brotli: true
+controller:
+  name: controller
+  image:
+    registry: registry.k8s.io
+    image: ingress-nginx/controller    
+    tag: "v1.1.1"
+    pullPolicy: IfNotPresent
+  config:
+    use-forwarded-headers: "true"
+  hostPort:    
+    enabled: true
+    ports:      
+      http: 80
+      https: 443      
+  kind: Deployment
+  nodeSelector: {}
+  replicaCount: 1
+  minAvailable: 1
+  updateStrategy:
+    type: Recreate
+  resources:
+    limits:
+      cpu: 100m
+      memory: 90Mi
+    requests:
+      cpu: 100m
+      memory: 90Mi
+  autoscaling:
+    enabled: false
+  keda:
+    enabled: false
+  service:
+    enabled: true
+    enableHttp: true
+    enableHttps: true
+    ports:
+      http: 80
+      https: 443
+    targetPorts:
+      http: http
+      https: https
+    type: NodePort
+    nodePorts:
+      tcp:
+        5432: 30001
+  admissionWebhooks:
+    enabled: false
+rbac:
+  create: true
+  scope: false
