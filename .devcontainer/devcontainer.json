@@ -29,5 +29,6 @@
     "--init"
   ],
   "onCreateCommand": "echo PS1='\"$ \"' >> ~/.bashrc",
+  "postCreateCommand": "sudo apt update && sudo apt install -y postgresql-client",
   "postAttachCommand": "git pull --all"
 }
