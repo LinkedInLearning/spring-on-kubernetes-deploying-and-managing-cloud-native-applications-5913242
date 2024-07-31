@@ -1,14 +1,33 @@
 {
-  "extensions": [    
-    "GitHub.github-vscode-theme",
-    "redhat.java",
-    "vscjava.vscode-spring-initializr",
-    "vscjava.vscode-spring-boot-dashboard",
-    "vmware.vscode-spring-boot"
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "32gb"
+  },
+  "overrideCommand": false,
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-contrib/features/kind:1": {}
+  },
+  "mounts": [
+    "source=var-lib-docker,target=/var/lib/docker,type=volume",
+    "source=kube,target=/home/vscode/.kube,type=volume"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [    
+        "GitHub.github-vscode-theme",
+        "redhat.java",
+        "vscjava.vscode-spring-initializr",
+        "vscjava.vscode-spring-boot-dashboard",
+        "vmware.vscode-spring-boot"
+      ]
+    }
+  },
+  "runArgs": [
+    "--privileged",
+    "--init"
   ],
   "onCreateCommand": "echo PS1='\"$ \"' >> ~/.bashrc",
   "postAttachCommand": "git pull --all"
-  
-  // Update welcome text and set terminal prompt to '$ '
 }
-// DevContainer Reference: https://code.visualstudio.com/docs/remote/devcontainerjson-reference
