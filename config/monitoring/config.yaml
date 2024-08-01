@@ -36,6 +36,9 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
+    service:
+      nodePort: 30000
+      type: NodePort
 grafana:
   enabled: true
   adminPassword: prom-operator
@@ -43,5 +46,15 @@ grafana:
   sidecar:
       dashboards:
         enabled: true
+  service:
+    nodePort: 31000
+    type: NodePort
 alertmanager:
   enabled: true
+  service:
+    nodePort: 32000
+    type: NodePort
+prometheus-node-exporter:
+  service:
+    nodePort: 32001
+    type: NodePort

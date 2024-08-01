@@ -8,7 +8,6 @@ if ! helm repo list | grep -q 'https://cloudnative-pg.github.io/charts'; then
 fi
 
 helm upgrade --install cloudnative-pg cloudnative-pg/cloudnative-pg
-echo "Waiting for operator in finish up"
-sleep 10
+echo "Waiting for operator to stabalize"
+sleep 30
 kubectl apply -f config.yaml
-

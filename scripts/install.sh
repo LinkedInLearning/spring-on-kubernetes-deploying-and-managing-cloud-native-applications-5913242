@@ -4,18 +4,20 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 echo "Installing kind"
-./kind/deploy.sh
+../config/kind/deploy.sh
 echo "Waiting for state stabalization"
 sleep 5
 echo "Installing ingress"
-./ingress/deploy.sh
+../config/ingress/deploy.sh
 echo "Waiting for state stabalization"
 sleep 5
 echo "Installing monitoring"
-./monitoring/deploy.sh
+../config/monitoring/deploy.sh
 echo "Waiting for state stabalization"
 sleep 5
 echo "Installing postgres"
-./postgres/deploy.sh
-sleep 10
+../config/postgres/deploy.sh
+sleep 60
+
+./populate-db.sh
 

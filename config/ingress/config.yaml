@@ -433,7 +433,7 @@ spec:
         - --watch-ingress-without-class=true
         - --enable-metrics=false
         - --publish-status-address=localhost
-        - —-tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
+        - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
         env:
         - name: POD_NAME
           valueFrom:
@@ -476,6 +476,7 @@ spec:
           name: webhook
           protocol: TCP
         - containerPort: 5432
+          hostPort: 5432
           name: postgres
           protocol: TCP
         readinessProbe:

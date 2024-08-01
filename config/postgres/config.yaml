@@ -7,28 +7,28 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: database-secret
+  name: localdb-secret
   namespace: postgres
 type: Opaque
 data:
-  username: bGlsdXNlcg==
-  password: bGlua2VkaW4=
+  username: bG9jYWx1c2Vy
+  password: cEBzc3cwUmQh
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: spring-kube
+  name: localdb
   namespace: postgres
 spec:
   instances: 1
   bootstrap:
     initdb:
-      database: lil
-      owner: liluser
+      database: localdb
+      owner: localuser
       secret:
-        name: database-secret
+        name: localdb-secret
   storage:
-    size: 1Gi
+    size: 2Gi
   monitoring:
     enablePodMonitor: true
   postgresql:
@@ -44,15 +44,15 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 data:
-  5432: postgres/spring-kube-rw:5432
+  5432: postgres/localdb-rw:5432
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: spring-kube-monitor
+  name: localdb-monitor
 spec:
   selector:
     matchLabels:
-      "cnpg.io/cluster": spring-kube
+      "cnpg.io/cluster": localdb
   podMetricsEndpoints:
   - port: metrics
