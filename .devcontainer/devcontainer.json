@@ -23,6 +23,7 @@
       ]
     }
   },
+  "remoteUser": "root",
   "runArgs": [
     "--privileged",
     "--init"
