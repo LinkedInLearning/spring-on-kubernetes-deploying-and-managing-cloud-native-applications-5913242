@@ -29,6 +29,8 @@ spec:
         name: database-secret
   storage:
     size: 1Gi
+  monitoring:
+    enablePodMonitor: true
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -40,3 +42,14 @@ metadata:
     app.kubernetes.io/part-of: ingress-nginx
 data:
   5432: default/spring-kube-rw:5432
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: spring-kube-monitor
+spec:
+  selector:
+    matchLabels:
+      "cnpg.io/cluster": spring-kube
+  podMetricsEndpoints:
+  - port: metrics

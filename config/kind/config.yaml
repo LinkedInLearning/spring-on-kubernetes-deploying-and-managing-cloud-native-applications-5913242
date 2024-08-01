@@ -18,3 +18,12 @@ nodes:
   - containerPort: 5432
     hostPort: 5432
     protocol: TCP
+  - containerPort: 30000
+    hostPort: 30000
+    protocol: TCP
+  - containerPort: 31000
+    hostPort: 31000
+    protocol: TCP
+  - containerPort: 32000
+    hostPort: 32000
+    protocol: TCP
