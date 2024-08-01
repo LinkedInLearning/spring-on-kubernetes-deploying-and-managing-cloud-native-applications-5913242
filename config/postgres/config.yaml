@@ -41,7 +41,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 data:
-  5432: default/spring-kube-rw:5432
+  5432: postgres/spring-kube-rw:5432
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
