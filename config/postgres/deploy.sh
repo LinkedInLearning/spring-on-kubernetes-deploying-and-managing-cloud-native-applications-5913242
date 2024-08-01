@@ -3,15 +3,12 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-# Add helm repo if it doesn't already exist
 if ! helm repo list | grep -q 'https://cloudnative-pg.github.io/charts'; then
-    helm repo add cnpg https://cloudnative-pg.github.io/charts
+    helm repo add cloudnative-pg https://cloudnative-pg.github.io/charts
 fi
 
-#Installing the CloudNativePG Operator
-helm upgrade --install cnpg \
---namespace cnpg-system \
---create-namespace \
-cnpg/cloudnative-pg
+helm upgrade --install cloudnative-pg cloudnative-pg/cloudnative-pg
+echo "Waiting for operator in finish up"
+sleep 10
+kubectl apply -f config.yaml
 
-kubectl apply -f instance.yaml

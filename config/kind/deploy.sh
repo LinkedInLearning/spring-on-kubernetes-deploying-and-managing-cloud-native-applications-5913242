@@ -2,4 +2,4 @@
 set -euo pipefail
 
 cd "$(dirname "$0")"
-kind create cluster --config ./kind_cluster.yaml
+kind create cluster --config ./config.yaml

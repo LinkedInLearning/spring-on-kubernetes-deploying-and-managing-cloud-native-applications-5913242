@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: postgres
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: database-secret
+  namespace: postgres
+type: Opaque
+data:
+  username: bGlsdXNlcg==
+  password: bGlua2VkaW4=
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: spring-kube
+  namespace: postgres
+spec:
+  instances: 1
+  bootstrap:
+    initdb:
+      database: lil
+      owner: liluser
+      secret:
+        name: database-secret
+  storage:
+    size: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tcp-services
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+data:
+  5432: default/spring-kube-rw:5432
