@@ -8,7 +8,7 @@ CREATE TABLE customers (
    customer_id UUID PRIMARY KEY,
    first_name VARCHAR,
    last_name VARCHAR,
-   email VARCHAR,
+   email VARCHAR UNIQUE,
    phone VARCHAR,
    address VARCHAR
 );
@@ -18,7 +18,7 @@ CREATE TABLE vendors (
      name VARCHAR NOT NULL,
      contact VARCHAR,
      phone VARCHAR,
-     email VARCHAR,
+     email VARCHAR UNIQUE,
      address VARCHAR
 );
 
