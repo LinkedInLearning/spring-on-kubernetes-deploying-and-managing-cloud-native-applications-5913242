@@ -22,7 +22,8 @@
         "redhat.java",
         "vscjava.vscode-spring-initializr",
         "vscjava.vscode-spring-boot-dashboard",
-        "vmware.vscode-spring-boot"
+        "vmware.vscode-spring-boot",
+        "vmware.vscode-boot-dev-pack"
       ]
     }
   },
