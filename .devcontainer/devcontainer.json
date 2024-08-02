@@ -33,6 +33,6 @@
     "--init"
   ],
   "onCreateCommand": "echo PS1='\"$ \"' >> ~/.bashrc && echo 'alias k=\"kubectl\"' >> ~/.bashrc",
-  "postCreateCommand": "sudo apt update && sudo apt install -y postgresql-client && sudo apt install -y httpie",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y postgresql-client && sudo apt-get install -y httpie",
   "postAttachCommand": "git pull --all"
 }
