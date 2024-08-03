@@ -36,9 +36,9 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
-    service:
-      nodePort: 30000
-      type: NodePort
+  service:
+    nodePort: 30000
+    type: NodePort
 grafana:
   enabled: true
   adminPassword: prom-operator
