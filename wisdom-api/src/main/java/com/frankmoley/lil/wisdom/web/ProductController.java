@@ -1,10 +1,10 @@
 package com.frankmoley.lil.wisdom.web;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.frankmoley.lil.wisdom.data.entity.Product;
+import com.frankmoley.lil.wisdom.data.repository.ProductRepository;
+import com.frankmoley.lil.wisdom.util.exception.BadRequestException;
+import com.frankmoley.lil.wisdom.util.exception.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.frankmoley.lil.wisdom.data.entity.Product;
-import com.frankmoley.lil.wisdom.data.repository.ProductRepository;
-import com.frankmoley.lil.wisdom.util.exception.BadRequestException;
-import com.frankmoley.lil.wisdom.util.exception.NotFoundException;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
@@ -42,9 +39,7 @@ public class ProductController {
     if(StringUtils.hasLength(name)){
       List<Product> products = new ArrayList<>();
       Optional<Product> product = this.productRepository.findByName(name);
-      if(product.isPresent()){
-        products.add(product.get());
-      }
+      product.ifPresent(products::add);
       return products;
     }
     return this.productRepository.findAll();
@@ -59,7 +54,7 @@ public class ProductController {
   @GetMapping("/{productId}")
   public Product getProduct(@PathVariable UUID productId){
     Optional<Product> product = this.productRepository.findById(productId);
-    if(!product.isPresent()){
+    if(product.isEmpty()){
       throw new NotFoundException("product not found with id: " + productId);
     }
     return product.get();

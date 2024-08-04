@@ -1,10 +1,10 @@
 package com.frankmoley.lil.wisdom.web;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.frankmoley.lil.wisdom.data.entity.Service;
+import com.frankmoley.lil.wisdom.data.repository.ServiceRepository;
+import com.frankmoley.lil.wisdom.util.exception.BadRequestException;
+import com.frankmoley.lil.wisdom.util.exception.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.frankmoley.lil.wisdom.data.entity.Service;
-import com.frankmoley.lil.wisdom.data.repository.ServiceRepository;
-import com.frankmoley.lil.wisdom.util.exception.BadRequestException;
-import com.frankmoley.lil.wisdom.util.exception.NotFoundException;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/services")
@@ -39,42 +36,40 @@ public class ServiceController {
   @GetMapping
   public Iterable<Service> getAllServices(@RequestParam(required=false) String name){
     if(StringUtils.hasLength(name)){
-      List<Service> Services = new ArrayList<>();
-      Optional<Service> Service = this.serviceRepository.findByName(name);
-      if(Service.isPresent()){
-        Services.add(Service.get());
-      }
-      return Services;
+      List<Service> services = new ArrayList<>();
+      Optional<Service> service = this.serviceRepository.findByName(name);
+      service.ifPresent(services::add);
+      return services;
     }
     return this.serviceRepository.findAll();
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Service addService(@RequestBody Service Service){
-    return this.serviceRepository.save(Service);
+  public Service addService(@RequestBody Service service){
+    return this.serviceRepository.save(service);
   }
 
-  @GetMapping("/{ServiceId}")
-  public Service getService(@PathVariable UUID ServiceId){
-    Optional<Service> Service = this.serviceRepository.findById(ServiceId);
-    if(!Service.isPresent()){
-      throw new NotFoundException("service not found with id: " + ServiceId);
+  @GetMapping("/{serviceId}")
+  public Service getService(@PathVariable UUID serviceId){
+    Optional<Service> service = this.serviceRepository.findById(serviceId);
+    if(service.isEmpty()){
+      throw new NotFoundException("service not found with id: " + serviceId);
     }
-    return Service.get();
+    return service.get();
   }
 
-  @PutMapping("/{ServiceId}")
-  public Service updateService(@PathVariable UUID ServiceId, @RequestBody Service Service){
-    if(!ServiceId.equals(Service.getServiceId())){
+  @PutMapping("/{serviceId}")
+  public Service updateService(@PathVariable UUID serviceId, @RequestBody Service service){
+    if(!serviceId.equals(service.getServiceId())){
       throw new BadRequestException("serviceId on path doesn't match request body");
     }
-    return this.serviceRepository.save(Service);
+    return this.serviceRepository.save(service);
   }
 
-  @DeleteMapping("/{ServiceId}")
+  @DeleteMapping("/{serviceId}")
   @ResponseStatus(HttpStatus.RESET_CONTENT)
-  public void deleteService(@PathVariable UUID ServiceId){
-    this.serviceRepository.deleteById(ServiceId);
+  public void deleteService(@PathVariable UUID serviceId){
+    this.serviceRepository.deleteById(serviceId);
   }
 }

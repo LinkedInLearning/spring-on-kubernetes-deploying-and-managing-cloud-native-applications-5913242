@@ -1,10 +1,10 @@
 package com.frankmoley.lil.wisdom.web;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.frankmoley.lil.wisdom.data.entity.Vendor;
+import com.frankmoley.lil.wisdom.data.repository.VendorRepository;
+import com.frankmoley.lil.wisdom.util.exception.BadRequestException;
+import com.frankmoley.lil.wisdom.util.exception.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.frankmoley.lil.wisdom.data.entity.Vendor;
-import com.frankmoley.lil.wisdom.data.repository.VendorRepository;
-import com.frankmoley.lil.wisdom.util.exception.BadRequestException;
-import com.frankmoley.lil.wisdom.util.exception.NotFoundException;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("vendors")
@@ -39,37 +36,35 @@ private final VendorRepository vendorRepository;
   @GetMapping
   public Iterable<Vendor> getAllVendors(@RequestParam(required=false)String email){
     if(StringUtils.hasLength(email)){
-      List<Vendor> Vendors = new ArrayList<>();
-      Optional<Vendor> Vendor = this.vendorRepository.findByEmail(email);
-      if(Vendor.isPresent()){
-        Vendors.add(Vendor.get());
-      }
-      return Vendors;
+      List<Vendor> vendors = new ArrayList<>();
+      Optional<Vendor> vendor = this.vendorRepository.findByEmail(email);
+      vendor.ifPresent(vendors::add);
+      return vendors;
     }
     return this.vendorRepository.findAll();
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Vendor createVendor(@RequestBody Vendor Vendor){
-    return this.vendorRepository.save(Vendor);
+  public Vendor createVendor(@RequestBody Vendor vendor){
+    return this.vendorRepository.save(vendor);
   }
 
   @GetMapping("/{vendorId}")
   public Vendor getVendor(@PathVariable UUID vendorId){
-    Optional<Vendor> Vendor = this.vendorRepository.findById(vendorId);
-    if(!Vendor.isPresent()){
+    Optional<Vendor> vendor = this.vendorRepository.findById(vendorId);
+    if(vendor.isEmpty()){
       throw new NotFoundException("Vendor not found with id: " + vendorId);
     }
-    return Vendor.get();
+    return vendor.get();
   }
 
   @PutMapping("/{vendorId}")
-  public Vendor putMethodName(@PathVariable UUID vendorId, @RequestBody Vendor Vendor) {
-      if(!vendorId.equals(Vendor.getVendorId())){
+  public Vendor putMethodName(@PathVariable UUID vendorId, @RequestBody Vendor vendor) {
+      if(!vendorId.equals(vendor.getVendorId())){
         throw new BadRequestException("vendorId on path must match body");
       }
-      return this.vendorRepository.save(Vendor);
+      return this.vendorRepository.save(vendor);
   }
 
   @DeleteMapping("/{vendorId}")

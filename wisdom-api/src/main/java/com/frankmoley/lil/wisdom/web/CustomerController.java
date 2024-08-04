@@ -60,7 +60,7 @@ public class CustomerController {
   @GetMapping("/{customerId}")
   public Customer getCustomer(@PathVariable UUID customerId){
     Optional<Customer> customer = this.customerRepository.findById(customerId);
-    if(!customer.isPresent()){
+    if(customer.isEmpty()){
       throw new NotFoundException("customer not found with id: " + customerId);
     }
     return customer.get();
