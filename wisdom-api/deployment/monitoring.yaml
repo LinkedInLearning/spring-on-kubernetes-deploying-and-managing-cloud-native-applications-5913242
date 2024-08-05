@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: wisdom-api-monitor
+  namespace: wisdom
+spec:
+  selector:
+    matchLabels:
+      app: wisdom-api
+  podMetricsEndpoints:
+    - targetPort: 8080
+      path: /actuator/prometheus
