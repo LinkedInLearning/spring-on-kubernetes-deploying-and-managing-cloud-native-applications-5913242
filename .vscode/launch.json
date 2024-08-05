@@ -4,6 +4,7 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
     {
       "type": "java",
       "name": "Current File",
@@ -21,8 +22,7 @@
         "DB_PASSWORD": "p@ssw0Rd!",
         "DB_PORT": 5432,
         "DB_NAME": "localdb",
-        "DB_HOST": "localhost",
-        "SPRING_PROFILES_ACTIVE": "dev"
+        "DB_HOST": "localhost"
       }
     }
   ]
