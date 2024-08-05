@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wisdom-api-deployment
+  namespace: wisdom
+  labels:
+    app: wisdom-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wisdom-api
+  template:
+    metadata: 
+      labels:
+        app: wisdom-api
+    spec:
+      containers:
+        - name: wisdom-api
+          image: wisdom-api:0.0.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "localdb"
+            - name: DB_HOST
+              value: "localdb-rw.postgres.svc.cluster.local"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: PASSWORD
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health/liveness
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health/readiness
