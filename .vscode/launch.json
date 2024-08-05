@@ -22,7 +22,8 @@
         "DB_PASSWORD": "p@ssw0Rd!",
         "DB_PORT": 5432,
         "DB_NAME": "localdb",
-        "DB_HOST": "localhost"
+        "DB_HOST": "localhost",
+        "SPRING_PROFILES_ACTIVE": "dev"
       }
     }
   ]
