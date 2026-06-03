@@ -1,7 +1,7 @@
 {
   "hostRequirements": {
-    "cpus": 8,
-    "memory": "32gb"
+    "cpus": 2,
+    "memory": "8gb"
   },
   "overrideCommand": false,
   "features": {
